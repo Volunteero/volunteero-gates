@@ -1,18 +1,35 @@
 <template>
-<div class="container">
-    <form @submit.prevent="authenticate()">
+<div class="container section">
+    <div class="row">
+      <div class="six columns offset-by-three">
+        <h4 class="u-left-align">Log In</h4>
+      </div>
+    </div>
+    <form @submit.prevent="authenticate()" class="">
       <div class="row">
-        <label for="">E-mail:</label>
-        <input v-model="auth.email" type="email" required>
+         <div class="six columns offset-by-three">
+          <label for="">E-mail:</label>
+          <input class="u-full-width"  v-model="auth.email" type="email" required>
+        </div>
       </div>
       <div class="row">
-        <label for="">Password</label>
-        <input v-model="auth.password" type="password" required>
+        <div class="six columns offset-by-three">
+          <label for="">Password</label>
+          <input class="u-full-width" v-model="auth.password" type="password" required>
+        </div>
       </div>
       <div class="row">
-        <button type="submit">Login</button>
+        <div class="six columns offset-by-three">
+          <button class="u-full-width" type="submit">Login</button>
+        </div>
       </div>
     </form>
+    <div class="row">
+      <div class="six columns offset-by-three">
+        <p class="u-left-align">Here for the first time?
+          <router-link :to="'/auth/register'">Register</router-link> :)</p>
+      </div>
+    </div>
 </div>
 </template>
 
@@ -22,6 +39,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      PATH: 'http://demo8679439.mockable.io/auth/login',
       auth: { email: '', password: '' },
       user: {},
     };
@@ -35,30 +53,20 @@ export default {
     authenticate() {
       const credentials = this.auth;
       axios
-        .post('http://demo8679439.mockable.io/auth/login', credentials)
+        .post(this.PATH, credentials)
         .then((response) => {
           console.log(response);
-          /**
-           * Now that we successfully retrieved the token and the user information
-           * we have a couple of options:
-           *
-           *     1) Save the token in local storage
-           *         - Keeps the token saved even when the browser is closed
-           *     2) Save the token in session storage
-           *         - Deletes the token when user closes the browser or even the tab
-           *     3) Save the token in a cookie
-           *
-           *  Both local and session storage api are the same so I'll use the local storage
-           *  for the sake of the example
-           *
-           */
-          window.localStorage.setItem('token', response.data.token);
+          // save the received token
           window.localStorage.setItem(
-            'auth-user',
-            JSON.stringify(response.data.user),
+            'accessToken',
+            response.data.accessToken,
+          );
+          window.localStorage.setItem(
+            'refreshToken',
+            response.data.refreshToken,
           );
 
-          // emit event for succesful login
+          // TODO: emit event for succesful login
           this.$swal('Logged in!');
         })
         .catch((errors) => {

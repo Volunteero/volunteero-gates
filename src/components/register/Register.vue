@@ -36,6 +36,7 @@
 <script>
 // TODO: this all looks very annoying and duplicating code
 import axios from 'axios';
+import WindowEvents from '../../mixins/WindowEvents';
 
 export default {
   data() {
@@ -45,6 +46,7 @@ export default {
       user: {},
     };
   },
+  mixins: [WindowEvents],
   methods: {
     /**
      * Attempts to register the new user
@@ -69,10 +71,12 @@ export default {
 
           // TODO: emit event for succesful registration
           this.$swal('Signed up!');
+          this.emit('SIGNED_UP');
         })
         .catch((errors) => {
           // catch errors
           console.error(errors);
+          this.emit('AUTHORIZATION_ERROR');
         });
     },
   },

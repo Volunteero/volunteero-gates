@@ -26,7 +26,7 @@
     </form>
     <div class="row">
       <div class="six columns offset-by-three">
-        <p class="u-left-align">Here for the first time?
+        <p class="u-left-align">Have no memory of this place?
           <router-link :to="'/auth/register'">Register</router-link> :)</p>
       </div>
     </div>
@@ -35,6 +35,7 @@
 
 <script>
 import axios from 'axios';
+import WindowEvents from '../../mixins/WindowEvents';
 
 export default {
   data() {
@@ -44,6 +45,7 @@ export default {
       user: {},
     };
   },
+  mixins: [WindowEvents],
   methods: {
     /**
      * Attempts to authenticate the user
@@ -68,10 +70,13 @@ export default {
 
           // TODO: emit event for succesful login
           this.$swal('Logged in!');
+          console.info(this);
+          this.emit('LOGGED_IN');
         })
         .catch((errors) => {
           // catch errors
           console.error(errors);
+          this.emit('AUTHORIZATION_ERROR');
         });
     },
   },

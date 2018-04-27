@@ -1,6 +1,7 @@
 # volunteero-gates
 
-> Volunteero authorization service frontend in Vue.js
+> Volunteero landing site frontend.
+> Written in Vue.js, paired with authorization and public discovery serivces.
 
 ## Build Setup
 

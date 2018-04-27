@@ -243,7 +243,12 @@ input[type="button"].button-green:focus {
   background-color: #08db0c;
   border-color: #08db0c; }
 
-
+/* Custom
+-------------------------------------------------- */
+.button,
+button.standard-size {
+  min-width: 160px;
+}
   
 
 /* Forms

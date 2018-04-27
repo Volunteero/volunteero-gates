@@ -36,7 +36,7 @@
 <script>
 // TODO: this all looks very annoying and duplicating code
 import axios from 'axios';
-import WindowEvents from '../../mixins/WindowEvents';
+import WindowEvents from '../../../mixins/WindowEvents';
 
 export default {
   data() {

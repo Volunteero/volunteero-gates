@@ -35,7 +35,7 @@
 
 <script>
 import axios from 'axios';
-import WindowEvents from '../../mixins/WindowEvents';
+import WindowEvents from '../../../mixins/WindowEvents';
 
 export default {
   data() {

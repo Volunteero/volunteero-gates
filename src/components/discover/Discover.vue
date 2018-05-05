@@ -40,22 +40,45 @@
       </div>
     </div>
 
-    <!-- TODO: define the spacer -->
-    <!-- <div class="navbar-spacer"></div> -->
+    <hr>
 
     <!-- TODO: add the result rendering into a component -->
     <!-- Rendering the results -->
     <section id="results">
       <div class="container section">
-        <div class="row">
+        <!-- <div class="row">
           <h5>Results</h5>
-        </div>
+        </div> -->
         <div id="nothing" class="row" v-if="search.results.length == 0">
           <p>Huh... seems like nothing is there... for your request </p>
         </div>
-        <div id="found" class="row" v-else>
-          <div v-for="result in search.results" :key="result.title">
-            <p>{{result}}</p>
+        <div v-else v-for="result in search.results"
+          :key="result.title">
+          <div class="card">
+            <div class="row">
+              <div class="one column offset-by-three">
+                <span class="lnr lnr-leaf"></span>
+              </div>
+              <div class="five columns u-left-align">
+                <h6>
+                  <b>{{result.title}}</b>
+                  <br/>
+                  <i>"{{result.description}}"</i>
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="one column offset-by-three">
+                <span class="lnr lnr-users"></span>
+              </div>
+              <div class="five columns u-left-align">
+                <p>
+                  <i>{{result.host}}</i>
+                  <br/>
+                  <i>{{result.location}}</i>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -138,3 +161,9 @@ export default {
 };
 </script>
 
+<style>
+.card {
+  border-bottom: 1px solid #eee;
+  margin-top: 5px
+}
+</style>

@@ -36,19 +36,64 @@
     <div class="row">
       <div class="six columns offset-by-three">
         <p>Found: {{resultNumber}} | Among:
-          <span v-for='sc in searchCategories' :key="sc.name">{{sc.name}} </span> </p>
+          <span v-for='sc in searchCategories' :key="sc.name">{{capitalize(sc.name)}} </span> </p>
       </div>
     </div>
 
-    <!-- TODO: add the result rendering component -->
+    <hr>
+
+    <!-- TODO: add the result rendering into a component -->
+    <!-- Rendering the results -->
+    <section id="results">
+      <div class="container section">
+        <!-- <div class="row">
+          <h5>Results</h5>
+        </div> -->
+        <div id="nothing" class="row" v-if="search.results.length == 0">
+          <p>Huh... seems like nothing is there... for your request </p>
+        </div>
+        <div v-else v-for="result in search.results"
+          :key="result.title">
+          <div class="card">
+            <div class="row">
+              <div class="one column offset-by-three">
+                <span class="lnr lnr-leaf"></span>
+              </div>
+              <div class="five columns u-left-align">
+                <h6>
+                  <b>{{result.title}}</b>
+                  <br/>
+                  <i>"{{result.description}}"</i>
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="one column offset-by-three">
+                <span class="lnr lnr-users"></span>
+              </div>
+              <div class="five columns u-left-align">
+                <p>
+                  <i>{{result.host}}</i>
+                  <br/>
+                  <i>{{result.location}}</i>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Discover',
   data() {
     return {
+      DISCOVER_SERVICE: 'https://volunteero-magic-mirror.herokuapp.com/',
       search: {
         term: '',
         lastTerm: '',
@@ -79,20 +124,46 @@ export default {
         cat => cat.selected,
       );
       console.log(searchCategories);
-      return (searchCategories.length === 0) ? [{ name: 'everything' }] : searchCategories;
+
+      return searchCategories.length === 0
+        ? [{ name: 'none' }] // todo: that's what magic-mirror expects
+        : searchCategories;
     },
   },
   methods: {
     lookup() {
-      const newTerm = this.search.term;
-      const oldTerm = this.search.lastTerm;
-      if (newTerm !== oldTerm) {
-        this.search.results = [
-          { name: 'Dummy', description: 'I am a dummy search result', newTerm },
-        ];
-      }
+      console.info('fired lookup');
+      const searchTerm = this.search.term;
+      const searchEntities = this.searchCategories.map(cat => cat.name);
+      const discoveryBody = {
+        entities: searchEntities,
+        search_term: searchTerm,
+      };
+      const self = this;
+      console.log(discoveryBody);
+      axios
+        .put(`${self.DISCOVER_SERVICE}discover`, discoveryBody)
+        .then((response) => {
+          console.log(response);
+          const results = response.data.results;
+          self.search.results = results;
+        })
+        .catch((error) => {
+          console.error('Could not get results fromt the discovery service...');
+          console.log(error);
+          self.search.results = [];
+        });
+    },
+    capitalize(s) {
+      return s[0].toUpperCase() + s.slice(1);
     },
   },
 };
 </script>
 
+<style>
+.card {
+  border-bottom: 1px solid #eee;
+  margin-top: 5px
+}
+</style>

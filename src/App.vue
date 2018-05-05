@@ -1,5 +1,12 @@
 <template>
   <div id="app">
+    <div id="top-bar">
+      <h3>
+        <router-link :to="'/'" class="no-underline">
+          <span class="lnr lnr-earth"></span>
+        </router-link>
+      </h3>
+    </div>
     <router-view/>
   </div>
 </template>
@@ -19,4 +26,9 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.no-underline{
+  text-decoration: none;
+}
+
 </style>

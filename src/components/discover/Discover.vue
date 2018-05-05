@@ -36,7 +36,7 @@
     <div class="row">
       <div class="six columns offset-by-three">
         <p>Found: {{resultNumber}} | Among:
-          <span v-for='sc in searchCategories' :key="sc.name">{{sc.name}} </span> </p>
+          <span v-for='sc in searchCategories' :key="sc.name">{{capitalize(sc.name)}} </span> </p>
       </div>
     </div>
 
@@ -45,10 +45,13 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Discover',
   data() {
     return {
+      DISCOVER_SERVICE: 'https://volunteero-magic-mirror.herokuapp.com/',
       search: {
         term: '',
         lastTerm: '',
@@ -79,18 +82,38 @@ export default {
         cat => cat.selected,
       );
       console.log(searchCategories);
-      return (searchCategories.length === 0) ? [{ name: 'everything' }] : searchCategories;
+
+      return searchCategories.length === 0
+        ? [{ name: 'none' }] // todo: that's what magic-mirror expects
+        : searchCategories;
     },
   },
   methods: {
     lookup() {
-      const newTerm = this.search.term;
-      const oldTerm = this.search.lastTerm;
-      if (newTerm !== oldTerm) {
-        this.search.results = [
-          { name: 'Dummy', description: 'I am a dummy search result', newTerm },
-        ];
-      }
+      console.info('fired lookup');
+      const searchTerm = this.search.term;
+      const searchEntities = this.searchCategories.map(cat => cat.name);
+      const discoveryBody = {
+        entities: searchEntities,
+        search_term: searchTerm,
+      };
+      const self = this;
+      console.log(discoveryBody);
+      axios
+        .put(`${self.DISCOVER_SERVICE}discover`, discoveryBody)
+        .then((response) => {
+          console.log(response);
+          const results = response.data.results;
+          self.search.results = results;
+        })
+        .catch((error) => {
+          console.error('Could not get results fromt the discovery service...');
+          console.log(error);
+          self.search.results = [];
+        });
+    },
+    capitalize(s) {
+      return s[0].toUpperCase() + s.slice(1);
     },
   },
 };

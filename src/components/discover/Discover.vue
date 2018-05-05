@@ -40,7 +40,26 @@
       </div>
     </div>
 
-    <!-- TODO: add the result rendering component -->
+    <!-- TODO: define the spacer -->
+    <!-- <div class="navbar-spacer"></div> -->
+
+    <!-- TODO: add the result rendering into a component -->
+    <!-- Rendering the results -->
+    <section id="results">
+      <div class="container section">
+        <div class="row">
+          <h5>Results</h5>
+        </div>
+        <div id="nothing" class="row" v-if="search.results.length == 0">
+          <p>Huh... seems like nothing is there... for your request </p>
+        </div>
+        <div id="found" class="row" v-else>
+          <div v-for="result in search.results" :key="result.title">
+            <p>{{result}}</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 

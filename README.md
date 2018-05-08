@@ -21,9 +21,6 @@ npm run build --report
 # build for production and server at localhost:5000
 npm start
 
-# run unit tests
-npm run unit
-
 # run all tests
 npm test
 ```

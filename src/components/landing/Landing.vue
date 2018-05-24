@@ -14,7 +14,7 @@
       <div class="6 columns offset-by-one">
         <!-- <p><i>Volunteero = Volunteer + Hero</i></p> -->
         <p>
-          <router-link :to="'/auth/login'">Join us</router-link>
+          <router-link :to="'/join'">Join us</router-link>
           or
           <router-link :to="'/discover'">discover</router-link>
           the community

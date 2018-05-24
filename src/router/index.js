@@ -5,8 +5,7 @@ import Router from 'vue-router';
 // Landing
 import Landing from '@/components/landing/Landing';
 // Auth Routes
-import Login from '@/components/auth/login/Login';
-import Register from '@/components/auth/register/Register';
+import AuthBase from '@/components/auth/AuthBase';
 // Discover Route
 import Discover from '@/components/discover/Discover';
 
@@ -21,14 +20,9 @@ export default new Router({
       component: Landing,
     },
     {
-      path: '/auth/login',
-      name: 'Login',
-      component: Login,
-    },
-    {
-      path: '/auth/register',
-      name: 'Register',
-      component: Register,
+      path: '/join',
+      name: 'Join',
+      component: AuthBase,
     },
     {
       path: '/discover',

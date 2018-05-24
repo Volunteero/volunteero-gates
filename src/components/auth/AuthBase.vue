@@ -7,26 +7,29 @@
         </div>
       </div>
 
-
-      <div class="row">
+      <form :id="authFormId">
+        <div class="row">
+            <div class="six columns offset-by-three">
+            <label for="">E-mail:</label>
+            <input class="u-full-width"  v-model="auth.username" type="email" required>
+          </div>
+        </div>
+        <div class="row">
           <div class="six columns offset-by-three">
-          <label for="">E-mail:</label>
-          <input class="u-full-width"  v-model="auth.email" type="email" required>
+            <label for="">Password</label>
+            <input class="u-full-width" v-model="auth.password" type="password" required>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="six columns offset-by-three">
-          <label for="">Password</label>
-          <input class="u-full-width" v-model="auth.password" type="password" required>
-        </div>
-      </div>
 
-      <div id="authentication-action">
-        <component
-          v-bind:is="currentActionComponent"
-          @action-switch="onActionSwitch"
-          ></component>
-      </div>
+        <div id="authentication-action">
+          <component
+            :is="currentActionComponent"
+            :auth="auth"
+            :form="authFormId"
+            @action-switch="onActionSwitch"
+            ></component>
+        </div>
+      </form>
   </div>
 </template>
 
@@ -51,7 +54,8 @@ export default {
         current: {},
       },
       // the handled data
-      auth: { email: '', password: '' },
+      auth: { username: '', password: '' },
+      authFormId: 'authForm',
       user: {},
     };
   },

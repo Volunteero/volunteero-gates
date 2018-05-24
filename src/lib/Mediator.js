@@ -39,7 +39,7 @@ export default class Mediator {
       url: reqUrl,
       method: reqMethod,
     };
-    if (typeof payload.getData() === 'function') {
+    if (typeof payload.getData === 'function') {
       options.data = payload.getData();
     }
     return options;

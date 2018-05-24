@@ -61,6 +61,7 @@ export default class AuthMediator extends Mediator {
       authPayload,
     );
 
+    console.log(options);
     return this.issueRequest(options);
   }
 

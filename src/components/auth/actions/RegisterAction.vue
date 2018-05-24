@@ -66,6 +66,13 @@ export default {
       console.log('Register method called');
       const am = new AuthMediator(axios);
       console.log(am);
+      const username = this.auth.username;
+      const password = this.auth.password;
+      if (username && password) {
+        am.registerUserAndLogin(username, password).then((result) => {
+          console.log(result);
+        });
+      }
     },
   },
 };

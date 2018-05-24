@@ -21,7 +21,7 @@ export default class AuthMediator extends Mediator {
   constructor(requester) {
     super(requester);
 
-    this.AUTH_SERVICE_URL = 'https://tmmi8qejaj.execute-api.eu-central-1.amazonaws.com/dev/';
+    this.AUTH_SERVICE_URL = 'https://volunteero-auth.herokuapp.com/';
     this.ACTIONS = {
       register: {
         resource: 'auth/register',
@@ -46,14 +46,7 @@ export default class AuthMediator extends Mediator {
       authPayload,
     );
 
-    // FIXME: make generic
-    return this.requestFunction(options).then((response) => {
-      console.log(response);
-      return response;
-    }).catch((error) => {
-      console.error(error);
-      return [];
-    });
+    return this.issueRequest(options);
   }
 
   loginUser(username, password) {
@@ -68,17 +61,10 @@ export default class AuthMediator extends Mediator {
       authPayload,
     );
 
-    // FIXME: make generic
-    return this.requestFunction(options).then((response) => {
-      console.log(response);
-      return response;
-    }).catch((error) => {
-      console.error(error);
-      return [];
-    });
+    return this.issueRequest(options);
   }
 
   registerUserAndLogin(username, password) {
-    this.registerUser(username, password).then(result => result);
+    return this.registerUser(username, password).then(result => result);
   }
 }

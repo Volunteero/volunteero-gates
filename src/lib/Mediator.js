@@ -8,6 +8,23 @@ export default class Mediator {
   }
 
   /**
+   * Sends the request with the options.
+   * Catches errors internally and
+   * resolves to null in case of any
+   * @param {Object} options
+   * @returns {Promise.<Object | null>}
+   */
+  issueRequest(options) {
+    return this.requestFunction(options).then((response) => {
+      console.log(response);
+      return response;
+    }).catch((error) => {
+      console.error(error);
+      return null;
+    });
+  }
+
+  /**
    * Forms the request options from the provided parameters.
    * Uses the getData() method of the payload to append the data
    * in a format expected by the API

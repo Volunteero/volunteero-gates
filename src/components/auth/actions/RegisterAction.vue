@@ -16,9 +16,11 @@
 </template>
 
 <script>
+import AuthMediator from '@/lib/AuthMediator';
 import SubmitButton from './generic/SubmitButton';
 import FormController from './lib/FormController';
 
+const axios = require('axios');
 
 const actionSwitchEvent = {
   key: 'action-switch',
@@ -50,19 +52,20 @@ export default {
       try {
         const validForm = FormController.checkFormValidity(document, this.form);
         if (validForm) {
-          console.log('ok');
+          console.log('form content is ok');
+          this.register();
         } else {
-          console.warn('not ok');
+          console.warn('form content is not valid');
         }
       } catch (error) {
         console.error('Form submission error');
         console.error(error);
       }
     },
-    register(action) {
-      console.log(`Submitting form with action: ${action}`);
-      const form = document.getElementById(this.form);
-      console.log(form);
+    register() {
+      console.log('Register method called');
+      const am = new AuthMediator(axios);
+      console.log(am);
     },
   },
 };

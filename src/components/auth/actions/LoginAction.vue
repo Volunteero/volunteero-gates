@@ -74,7 +74,13 @@ export default {
       const password = this.auth.password;
       if (username && password) {
         am.loginUser(username, password).then((result) => {
+          console.log('Login result received');
           console.log(result);
+          this.$emit('auth-result', result);
+        }).catch((error) => {
+          console.error('Registration failed:');
+          console.log(error);
+          this.$emit('auth-error', error);
         });
       }
     },

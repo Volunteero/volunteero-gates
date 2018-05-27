@@ -66,6 +66,18 @@ export default class AuthMediator extends Mediator {
   }
 
   registerUserAndLogin(username, password) {
-    return this.registerUser(username, password).then(result => result);
+    return this.registerUser(username, password).then((result) => {
+      if (!result.data) {
+        // TODO: this is a breaking
+        throw new Error('No data field in received response');
+      }
+
+      if (!(result.data.success === true || result.data.success === 'true')) {
+        // TODO: this is an expected problem
+        throw new Error('Registration was not sucessful');
+      }
+
+      return this.loginUser(username, password);
+    });
   }
 }

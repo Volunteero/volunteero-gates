@@ -27,6 +27,7 @@
             :auth="auth"
             :form="authFormId"
             @action-switch="onActionSwitch"
+            @auth-result="onAuthResult"
             ></component>
         </div>
       </form>
@@ -84,6 +85,20 @@ export default {
         console.warn(
           `Attempted to switch to ${newActionValue}, but such option is not found`,
         );
+      }
+    },
+    onAuthResult(result) {
+      console.info('Handling auth result');
+      console.log(result);
+      const data = result.data;
+      if (data.success === true || data.success === 'true') {
+        if (
+          typeof data.accessToken === 'string' &&
+          data.accessToken !== ''
+        ) {
+          console.log('Received access token');
+          console.log(data.accessToken);
+        }
       }
     },
   },

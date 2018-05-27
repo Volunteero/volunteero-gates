@@ -1,7 +1,7 @@
 /* eslint-disable-next-line no-unused-vars  */
 const WindowEvents = {
   methods: {
-    emit(message) {
+    notify(message) {
       console.info(`>>> EMMITTED EVENT: ${message}`);
       // alert(message);
       window.dispatchEvent(new Event(message));

@@ -38,6 +38,7 @@
 import LoginAction from './actions/LoginAction';
 import RegisterAction from './actions/RegisterAction';
 import Token from './actions/lib/Token';
+import RedirectService from '../../lib/RedirectService';
 
 /* Mixins */
 import JwtManager from '../../mixins/JwtManager';
@@ -105,6 +106,7 @@ export default {
           console.log('Received access token');
           console.log(token);
           this.saveAuthData(token);
+          this.redirectApp(token);
         }
       }
     },
@@ -114,6 +116,14 @@ export default {
       const tokenData = this.parseJwtData(token);
       const tokenObject = new Token(token, tokenData);
       this.$cookie.set('token', token, { expires: tokenObject.getExpirationDate() });
+    },
+    redirectApp(token) {
+      const rs = new RedirectService();
+      const url = rs.getUrl('CLIENT_APP', { key: 'token', value: token });
+      console.info(`Redirecting to ${url}`);
+      if (url !== '') {
+        window.location = url;
+      }
     },
   },
 };

@@ -1,5 +1,8 @@
 <template>
   <div class="six columns offset-by-three">
+    <!-- TODO: adjust the horizontal line margins -->
+    <hr/>
+    <!-- TODO: add some indication of the process -->
     <button
       type="button"
       class="button-primary u-full-width"
@@ -13,6 +16,7 @@
 export default {
   props: {
     action: String,
+    active: false,
   },
   methods: {
     submitAuthForm() {

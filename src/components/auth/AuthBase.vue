@@ -37,9 +37,13 @@
 <script>
 import LoginAction from './actions/LoginAction';
 import RegisterAction from './actions/RegisterAction';
+import Token from './actions/lib/Token';
+
+/* Mixins */
+import JwtManager from '../../mixins/JwtManager';
 
 export default {
-  // mixins: [WindowEvents],
+  mixins: [JwtManager],
   data() {
     return {
       // the action component dictionary
@@ -90,16 +94,26 @@ export default {
     onAuthResult(result) {
       console.info('Handling auth result');
       console.log(result);
+      if (result === null) {
+        console.warn('Received a null response');
+        return;
+      }
       const data = result.data;
       if (data.success === true || data.success === 'true') {
-        if (
-          typeof data.accessToken === 'string' &&
-          data.accessToken !== ''
-        ) {
+        if (typeof data.accessToken === 'string' && data.accessToken !== '') {
+          const token = data.accessToken;
           console.log('Received access token');
-          console.log(data.accessToken);
+          console.log(token);
+          this.saveAuthData(token);
         }
       }
+    },
+    saveAuthData(token) {
+      this.token = token;
+      // parseJwtData method comes from the mixin
+      const tokenData = this.parseJwtData(token);
+      const tokenObject = new Token(token, tokenData);
+      this.$cookie.set('token', token, { expires: tokenObject.getExpirationDate() });
     },
   },
 };

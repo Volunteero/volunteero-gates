@@ -1,11 +1,12 @@
 import Vue from 'vue';
-import VueSwal from 'vue-swal';
+import VueCookie from 'vue-cookie';
 import App from './App';
 import router from './router';
 
-Vue.use(VueSwal);
 
 Vue.config.productionTip = false;
+
+Vue.use(VueCookie);
 
 /* eslint-disable no-new */
 new Vue({

@@ -3,6 +3,8 @@
 > Volunteero landing site frontend.
 > Written in Vue.js, paired with authorization and public discovery serivces.
 
+Deployed and hosted with Heroku to [`https://volunteero-gates.herokuapp.com/`](https://volunteero-gates.herokuapp.com/)  
+
 ## Functionality   
 The landing page is the first entry point to the Volunteero platform.   
 > Hence the `volunteero-gates` name of this project  

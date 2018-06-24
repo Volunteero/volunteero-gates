@@ -15,7 +15,8 @@ The authorized users are then redirected to the main application endpoint of the
 
 ### Authorization  
 The authorization mechanism is using the concept of [`jwt` tokens](https://jwt.io/) as explained in [`auth-service`](https://github.com/Volunteero/authentication-service)  
-Once the user logs in (or registers) the token is saved in the cookies on the `gates` domain and the user is redirected to the main web app with the authorization token.  
+Once the user logs in (or registers) the token is saved in the cookies on the `gates` domain.  
+The user is redirected to the main web app with the authorization token.    
 This authenticates the user on the main web app and permits him to access all the features requiring the account.  
 
 ## Build Setup

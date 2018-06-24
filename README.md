@@ -3,6 +3,21 @@
 > Volunteero landing site frontend.
 > Written in Vue.js, paired with authorization and public discovery serivces.
 
+## Functionality   
+The landing page is the first entry point to the Volunteero platform.   
+> Hence the `volunteero-gates` name of this project  
+  
+The main purpose is to give a first introduction of the platform to the user.   
+The users can `/discover` activities (_activities and campaigns_) and organizations present on the platform.  
+Also the `gates` serve as the authorization endpoint for the users. At the `/join` route the users can _register_ or _login_.  
+The authorized users by one of these means are then redirected to the main application endpoint of the platform: [`front-end-base`](https://github.com/Volunteero/volunteero-front-end-base)  
+
+
+### Authorization  
+The authorization mechanism is using the concept of [`jwt` tokens](https://jwt.io/) as explained in [`auth-service`](https://github.com/Volunteero/authentication-service)  
+Once the user logs in (or registers) the token is saved in the cookies on the `gates` domain and the user is redirected to the main web app with the authorization token.  
+This authenticates the user on the main web app and permits him to access all the features requiring the account.  
+
 ## Build Setup
 
 ``` bash

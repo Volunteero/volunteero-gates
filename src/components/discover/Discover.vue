@@ -21,7 +21,7 @@
           <button
             :class="{ 'button-primary': category.selected,}"
             class="standard-size"
-            @click="category.selected = !category.selected">
+            @click="select(category)">
               <i
                 class="lnr"
                 :class="{'lnr-cloud': !category.selected, 'lnr-sun': category.selected}"
@@ -57,28 +57,26 @@
           <div class="card">
             <div class="row">
               <div class="one column offset-by-three">
-                <span class="lnr lnr-leaf"></span>
+                <h5><span class="lnr lnr-leaf"></span></h5>
               </div>
               <div class="five columns u-left-align">
-                <h6>
-                  <b>{{result.title}}</b>
+                <h5>
+                  <b>{{result.name}}</b>
                   <br/>
                   <i>"{{result.description}}"</i>
-                </h6>
+                </h5>
               </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
               <div class="one column offset-by-three">
-                <span class="lnr lnr-users"></span>
+                <span class="lnr lnr-flag"></span>
               </div>
               <div class="five columns u-left-align">
                 <p>
-                  <i>{{result.host}}</i>
-                  <br/>
                   <i>{{result.location}}</i>
                 </p>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -93,21 +91,24 @@ export default {
   name: 'Discover',
   data() {
     return {
-      DISCOVER_SERVICE: 'https://volunteero-magic-mirror.herokuapp.com/',
+      DISCOVER_SERVICE: 'https://volunteero-search.herokuapp.com/api/v1/search',
       search: {
         term: '',
         lastTerm: '',
         categories: [
           {
             name: 'events',
+            value: 'event',
             selected: true,
           },
           {
             name: 'campaigns',
+            value: 'campaign',
             selected: false,
           },
           {
             name: 'organizations',
+            value: 'organization',
             selected: false,
           },
         ],
@@ -126,26 +127,47 @@ export default {
       console.log(searchCategories);
 
       return searchCategories.length === 0
-        ? [{ name: 'none' }] // todo: that's what magic-mirror expects
+        ? [{ name: 'everything', value: 'any' }] // todo: that's what magic-mirror expects
         : searchCategories;
+    },
+    searchTerm() {
+      return encodeURIComponent(this.search.term.trim());
     },
   },
   methods: {
+    select(category) {
+      this.search.categories = this.search.categories.map((cat) => {
+        const catCopy = Object.assign({}, cat);
+        catCopy.selected = cat.name === category.name && !category.selected;
+        return catCopy;
+      });
+      this.lookup();
+    },
     lookup() {
       console.info('fired lookup');
-      const searchTerm = this.search.term;
-      const searchEntities = this.searchCategories.map(cat => cat.name);
+      const searchTerm = this.searchTerm;
+      if (searchTerm.length === 0) {
+        return;
+      }
+      const searchEntities = this.searchCategories.map(cat => cat.value);
       const discoveryBody = {
-        entities: searchEntities,
-        search_term: searchTerm,
+        entities: `?type=${searchEntities.shift()}`,
+        search_term: `&keyword=${searchTerm}`,
       };
       const self = this;
       console.log(discoveryBody);
       axios
-        .put(`${self.DISCOVER_SERVICE}discover`, discoveryBody)
+        .get(
+          `${self.DISCOVER_SERVICE}${discoveryBody.entities}${
+            discoveryBody.search_term
+          }`,
+        )
         .then((response) => {
           console.log(response);
-          const results = response.data.results;
+          const campaigns = response.data.campaigns || [];
+          const events = response.data.events || [];
+          const organizations = response.data.organizations || [];
+          const results = campaigns.concat(events).concat(organizations);
           self.search.results = results;
         })
         .catch((error) => {
@@ -164,6 +186,6 @@ export default {
 <style>
 .card {
   border-bottom: 1px solid #eee;
-  margin-top: 5px
+  margin-top: 5px;
 }
 </style>

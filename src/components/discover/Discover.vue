@@ -57,7 +57,7 @@
           <div class="card">
             <div class="row">
               <div class="one column offset-by-three">
-                <h5><span class="lnr lnr-leaf"></span></h5>
+                <h5><span class="lnr" :class="getIconClass(result)"></span></h5>
               </div>
               <div class="five columns u-left-align">
                 <h5>
@@ -87,6 +87,12 @@
 <script>
 import axios from 'axios';
 
+const DATA_TYPES = {
+  event: 'event',
+  campaign: 'campaign',
+  organization: 'organization',
+};
+
 export default {
   name: 'Discover',
   data() {
@@ -98,17 +104,17 @@ export default {
         categories: [
           {
             name: 'events',
-            value: 'event',
+            value: DATA_TYPES.event,
             selected: true,
           },
           {
             name: 'campaigns',
-            value: 'campaign',
+            value: DATA_TYPES.campaign,
             selected: false,
           },
           {
             name: 'organizations',
-            value: 'organization',
+            value: DATA_TYPES.organization,
             selected: false,
           },
         ],
@@ -164,11 +170,25 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          const campaigns = response.data.campaigns || [];
-          const events = response.data.events || [];
-          const organizations = response.data.organizations || [];
+          const campaigns = (response.data.campaigns || []).map((camp) => {
+            const campCopy = Object.assign({}, camp);
+            campCopy.type = DATA_TYPES.campaign;
+            return campCopy;
+          });
+          const events = (response.data.events || []).map((event) => {
+            const eventCopy = Object.assign({}, event);
+            eventCopy.type = DATA_TYPES.event;
+            return eventCopy;
+          });
+          const organizations = (response.data.organizations || []).map(
+            (event) => {
+              const eventCopy = Object.assign({}, event);
+              eventCopy.type = DATA_TYPES.organization;
+              return eventCopy;
+            },
+          );
           const results = campaigns.concat(events).concat(organizations);
-          self.search.results = results;
+          self.search.results = results.sort(() => Math.random() > 0.3);
         })
         .catch((error) => {
           console.error('Could not get results fromt the discovery service...');
@@ -178,6 +198,22 @@ export default {
     },
     capitalize(s) {
       return s[0].toUpperCase() + s.slice(1);
+    },
+    getIconClass({ type }) {
+      switch (type) {
+        case DATA_TYPES.event: {
+          return 'lnr-leaf';
+        }
+        case DATA_TYPES.campaign: {
+          return 'lnr-flag';
+        }
+        case DATA_TYPES.organization: {
+          return 'lnr-home';
+        }
+        default: {
+          return 'lnr-leaf';
+        }
+      }
     },
   },
 };

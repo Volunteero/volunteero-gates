@@ -10,7 +10,7 @@ The landing page is the first entry point to the Volunteero platform.
 The main purpose is to give a first introduction of the platform to the user.   
 The users can `/discover` activities (_activities and campaigns_) and organizations present on the platform.  
 Also the `gates` serve as the authorization endpoint for the users. At the `/join` route the users can _register_ or _login_.  
-The authorized users by one of these means are then redirected to the main application endpoint of the platform: [`front-end-base`](https://github.com/Volunteero/volunteero-front-end-base)  
+The authorized users are then redirected to the main application endpoint of the platform: [`front-end-base`](https://github.com/Volunteero/volunteero-front-end-base)  
 
 
 ### Authorization  
